@@ -50,3 +50,8 @@ pip install -r requirements.txt
 
 - To Run SQL code
   Open the code in your DB UI editor in eithe DBeaver or DataGrip
+
+### Contributors
+
+- [Chimagbanwe Umeh](https://gitlab.bht-berlin.de/lvqm8161)
+- Add yours please

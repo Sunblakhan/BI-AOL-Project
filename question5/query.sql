@@ -1,5 +1,6 @@
-DROP TABLE IF EXISTS AOL_SCHEMA.MARKET_CONFIDENCE_FACT CASCADE;
-CREATE TABLE AOL_SCHEMA.MARKET_CONFIDENCE_FACT (
+-- 1. Create the table structure for FINANCIAL_TRENDS_DIM
+DROP TABLE IF EXISTS AOL_SCHEMA.FINANCIAL_TRENDS_DIM CASCADE;
+CREATE TABLE AOL_SCHEMA.FINANCIAL_TRENDS_DIM (
     STOCK_DATE DATE,
     TICKER VARCHAR(10) UTF8,
     OPEN_PRICE DECIMAL(18,4),
@@ -12,10 +13,18 @@ CREATE TABLE AOL_SCHEMA.MARKET_CONFIDENCE_FACT (
 
 -- 2. Set the Primary Key to the Composite Key of Date and Ticker
 -- This ensures each stock (AAPL, EBAY) has only one price entry per day.
-ALTER TABLE AOL_SCHEMA.MARKET_CONFIDENCE_FACT
-ADD CONSTRAINT MARKET_CONFIDENCE_FACT_PK PRIMARY KEY (STOCK_DATE, TICKER) ENABLE;
+ALTER TABLE AOL_SCHEMA.FINANCIAL_TRENDS_DIM
+ADD CONSTRAINT FINANCIAL_TRENDS_DIM_PK PRIMARY KEY (STOCK_DATE, TICKER) ENABLE;
 
 
+-- ==========================================================
+-- 3. Populate the FINANCIAL_TRENDS_DIM table using the data/FINANCIAL_TRENDS_DIM.csv file
+-- ==========================================================
+
+
+-- ==========================================================
+-- 4. Query the data for the plot
+-- ==========================================================
 WITH Daily_Digital_Searches AS (
     -- 1. Aggregate the daily count of high-intent digital searches
     SELECT
@@ -51,15 +60,15 @@ Cumulative_AOL_Trend AS (
 SELECT
     CAT.Date_Key,
     CAT.Total_Daily_Digital_Searches,
-    ROUND(CAT.Cumulative_Search_Avg, 3),
-    MCF.ADJ_CLOSE_PRICE,
-    MCF.TICKER
+    ROUND(CAT.Cumulative_Search_Avg, 3) AS Cumulative_Search_Avg,
+    FTD.ADJ_CLOSE_PRICE,
+    FTD.TICKER
 FROM
     Cumulative_AOL_Trend CAT
 JOIN
-    AOL_SCHEMA.MARKET_CONFIDENCE_FACT MCF 
-    ON CAT.Date_Key = TO_CHAR(MCF.STOCK_DATE, 'YYYY-MM-DD')
+    AOL_SCHEMA.FINANCIAL_TRENDS_DIM FTD 
+    ON CAT.Date_Key = TO_CHAR(FTD.STOCK_DATE, 'YYYY-MM-DD')
 WHERE
---    MCF.TICKER = 'AAPL'
-    MCF.TICKER = 'EBAY'
+    FTD.TICKER = 'AAPL'
+--    FTD.TICKER = 'EBAY'
 ORDER BY CAT.Date_Key;
