@@ -97,9 +97,9 @@ ORDER BY Event_Date_String;
 SELECT
     E.EVENT_DATE,
     E.EVENT_KEYWORD,
-    COUNT(F.QUERYID) AS High_Intent_Search_Count,
+    COUNT(F.QUERYID) AS High_Intent_Search_Count
     -- Get the total number of unique users involved in this event's search spike
---    COUNT(DISTINCT F.ANONID) AS Unique_Users_Involved
+--COUNT(DISTINCT F.ANONID) AS Unique_Users_Involved
 FROM
     AOL_SCHEMA.FACTS F
 -- 1. Join to the bridge table to filter FACTS by the event dates
