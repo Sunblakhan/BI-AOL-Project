@@ -53,5 +53,8 @@ pip install -r requirements.txt
 
 ### Contributors
 
-- [Chimagbanwe Umeh](https://gitlab.bht-berlin.de/lvqm8161)
-- Add yours please
+- [Sunbla Khan](https://gitlab.bht-berlin.de/lvqm8161)
+- Ravi Pandit
+- Chimagbanwe Umeh
+- Ebna Sina
+- Krishnakumar Mudaliar
